@@ -8,8 +8,8 @@
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<module.id>pebble-module</module.id>
-		<module.name>pebble module</module.name>
+		<module.id>jinja-module</module.id>
+		<module.name>jinja module</module.name>
 		<module.priority>HIGH</module.priority>
 		<cms.version>7.1.0</cms.version>
 		<maven.compiler.source>21</maven.compiler.source>
