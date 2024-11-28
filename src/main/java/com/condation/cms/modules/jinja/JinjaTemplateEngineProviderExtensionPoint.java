@@ -1,5 +1,7 @@
 package com.condation.cms.modules.jinja;
 
+import com.condation.cms.api.extensions.TemplateEngineProviderExtensionPoint;
+
 /*-
  * #%L
  * jinja-module
@@ -23,7 +25,7 @@ package com.condation.cms.modules.jinja;
  */
 
 
-import com.condation.cms.api.extensions.TemplateEngineProviderExtentionPoint;
+import com.condation.cms.api.extensions.TemplateEngineProviderExtensionPoint;
 import com.condation.cms.api.template.TemplateEngine;
 import com.condation.modules.api.annotation.Extension;
 
@@ -31,8 +33,8 @@ import com.condation.modules.api.annotation.Extension;
  *
  * @author t.marx
  */
-@Extension(TemplateEngineProviderExtentionPoint.class)
-public class JinjaTemplateEngineProviderExtentionPoint extends TemplateEngineProviderExtentionPoint {
+@Extension(TemplateEngineProviderExtensionPoint.class)
+public class JinjaTemplateEngineProviderExtensionPoint extends TemplateEngineProviderExtensionPoint {
 
 	@Override
 	public void init() {
@@ -40,7 +42,7 @@ public class JinjaTemplateEngineProviderExtentionPoint extends TemplateEnginePro
 
 	@Override
 	public String getName() {
-		return "pebble";
+		return "jinja";
 	}
 
 	@Override

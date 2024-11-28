@@ -34,8 +34,6 @@ import com.hubspot.jinjava.loader.FileLocator;
 import com.hubspot.jinjava.loader.ResourceLocator;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +47,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JinjaTemplateEngine implements TemplateEngine {
 
 	private Jinjava templateEngine;
-	private Jinjava stringTemplateEngine;
 
 	final DB db;
 	final ServerProperties properties;
@@ -61,7 +58,8 @@ public class JinjaTemplateEngine implements TemplateEngine {
 		buildEngine(theme);
 	}
 
-	private ResourceLocator createLoader(final DBFileSystem fileSystem, final Theme theme) throws FileNotFoundException {
+	private ResourceLocator createLoader(final DBFileSystem fileSystem, final Theme theme)
+			throws FileNotFoundException {
 		List<ResourceLocator> loaders = new ArrayList<>();
 
 		var siteLoader = new FileLocator(fileSystem.resolve("templates/").toFile());
@@ -93,7 +91,7 @@ public class JinjaTemplateEngine implements TemplateEngine {
 
 	@Override
 	public void invalidateCache() {
-//		fileTemplateEngine.getTemplateCache().invalidateAll();
+		// fileTemplateEngine.getTemplateCache().invalidateAll();
 	}
 
 	@Override
@@ -102,7 +100,11 @@ public class JinjaTemplateEngine implements TemplateEngine {
 	}
 
 	private void buildEngine(Theme theme) {
+
+		ClassLoader curClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
+			Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+
 			final JinjavaConfig config = new JinjavaConfig();
 
 			if (properties.dev()) {
@@ -111,10 +113,13 @@ public class JinjaTemplateEngine implements TemplateEngine {
 
 			}
 
-			templateEngine =  new Jinjava(config);
+			templateEngine = new Jinjava(config);
 			templateEngine.setResourceLocator(createLoader(db.getFileSystem(), theme));
+
 		} catch (FileNotFoundException ex) {
 			log.error("", ex);
+		} finally {
+			Thread.currentThread().setContextClassLoader(curClassLoader);
 		}
 	}
 
